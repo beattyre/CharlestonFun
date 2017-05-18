@@ -25,8 +25,8 @@ $.getJSON("https://rawgit.com/beattyre/CharlestonFun/master/data/CharlestonDesti
 		}
 	}).addTo(map);
 var clusters = L.markerClusterGroup({
-  maxClusterRadius: 300,
-	showCoverageOnHover: false
+  maxClusterRadius: 500,
+  showCoverageOnHover: false
  });
  clusters.addLayer(destinations);
 map.addLayer(clusters);
