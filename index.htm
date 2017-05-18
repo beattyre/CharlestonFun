@@ -1,0 +1,62 @@
+<DOCTYPE HTML>
+<html lang="en">
+	<head> 
+		<title>Let's get drunk and eat in Charleston </title>
+		<script src="js/leaflet.js"></script>
+		<link rel="stylesheet" href="css/leaflet.css" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="js/leaflet.markercluster.js"></script>
+		<link rel="stylesheet" href="css/MarkerCluster.css"/>
+		<link rel="stylesheet" href="css/MarkerCluster.Default.css"/>
+		
+		<style>
+		#map {
+			height: 100%
+			}
+		</style>
+		
+	</head>
+	<body>
+	
+	<div id="map"></div>
+	
+	<script>
+		// Load map variable and set extent
+		var map;
+		function initmap() {
+			map = new L.map('map');
+			var osmTile = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+			var osmAttributes = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+			var osm = L.tileLayer(osmTile, {
+				minZoom: 8,
+				maxZoom: 20,
+				attribution: osmAttributes,
+			});
+			map.setView(new L.LatLng(32.8211, -79.9705), 11);
+			map.addLayer(osm);
+		};
+	
+	initmap();
+	
+		// Load Charleston Point Data
+	
+		$.getJSON("https://rawgit.com/beattyre/CharlestonFun/master/data/CharlestonDestinations.geojson", function(data){
+			var destinations =  L.geoJson(data, {
+				pointToLayer: function(feature, latlng){
+					var marker = L.marker(latlng);
+					marker.bindPopup('<b>Destination:</b> ' + feature.properties.NAME + '<br>' + '<b>Type:</b> ' + feature.properties.TYPE);
+					return marker;
+				}
+			}).addTo(map);
+			var clusters = L.markerClusterGroup({
+				maxClusterRadius: 300,
+				showCoverageOnHover: false
+			});
+			clusters.addLayer(destinations);
+			map.addLayer(clusters);
+		});
+	
+	</script>
+	</body>
+	</html>
+	
