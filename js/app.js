@@ -18,17 +18,17 @@ initmap();
 
 $.getJSON("https://rawgit.com/beattyre/CharlestonFun/master/data/CharlestonDestinations.geojson", function(data){
   var destinations =  L.geoJson(data, {
-		pointToLayer: function(feature, latlng){
+	  pointToLayer: function(feature, latlng){
 			var marker = L.marker(latlng);
 			marker.bindPopup('<b>Destination:</b> ' + feature.properties.NAME + '<br>' + '<b>Type:</b> ' + feature.properties.TYPE);
 			return marker;
-		}
-	}).addTo(map);
-var clusters = L.markerClusterGroup({
-  maxClusterRadius: 500,
-  showCoverageOnHover: false
- });
- clusters.addLayer(destinations);
-map.addLayer(clusters);
-		});
+	  }
+  }).addTo(map);
+  var clusters = L.markerClusterGroup({
+  	maxClusterRadius: 500, showCoverageOnHover: false, singleMarkerMode: true, 
+ 	});
+  clusters.addLayer(destinations);
+  map.addLayer(clusters);
+  clusters.refreshClusters();
+});
 	
